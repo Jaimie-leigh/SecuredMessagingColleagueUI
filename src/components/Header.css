@@ -1,0 +1,14 @@
+.header{
+    background-color: #005eb8;
+    position: static;
+    top: 0;
+    left:0;
+    right:0;
+    background: rgb(0,94,184);
+    background: linear-gradient(90deg, #005eb8 35%, #071D49 110%);
+}
+
+.header-logo{
+    height: 5em;
+    margin: 1em;
+}
