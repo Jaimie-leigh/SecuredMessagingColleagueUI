@@ -10,12 +10,14 @@ class BrokerWelcome extends React.Component {
     this.state = {
       data: [],
       isLoading: false,
+      brokerID: props.location.state,
     };
   console.log('props', props.location.state);
   }
 
   componentDidMount(){
     this.setState({ isLoading: true });
+    this.setState({ brokerID: this.props.location.state});
     const serachByBrokerId = this.props.location.state;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
     const url = "http://securedmessaging.azurewebsites.net/api/broker/" + serachByBrokerId;
@@ -47,7 +49,7 @@ class BrokerWelcome extends React.Component {
         <div className="brokerApps">
           {data.application.map(app =>
           <ul className="applicationBox">
-            <li className="appLink"><HomeIcon className="applicationBoxHeaderIcon"/><Link to={{ pathname: "/ApplicationMessages", state:{rollNumber : app.rollNumber} }}>Roll number: {app.rollNumber}</Link></li>
+            <li className="appLink"><HomeIcon className="applicationBoxHeaderIcon"/><Link to={{ pathname: "/ApplicationMessages", state:{rollNumber : app.rollNumber, brokerID: this.state.brokerID} }}>Roll number: {app.rollNumber}</Link></li>
             <li> Customer name: {app.customerFullName}</li>
           </ul>
             )}

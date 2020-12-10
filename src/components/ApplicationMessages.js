@@ -5,29 +5,64 @@ import { ReactComponent as UpIcon } from "../images/up-chevron.svg";
 import { ReactComponent as ChatIcon } from "../images/chat.svg";
 import { ReactComponent as QuestionIcon } from "../images/question.svg";
 import Moment from "moment";
-import { Form, Button, Table } from "react-bootstrap";
+import { Form, Button, Col } from "react-bootstrap";
 
 class ApplicationMessages extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
+      messageChainData: [],
+      messageSubjectData: [],
       isLoading: false,
       checkboxes: [],
       selectedId: [],
       formLableSelected: "new",
+      formSelectedSubject: "",
+      formSelectedSubjectId: "",
+      formNewSubject: "",
+      formChainID: "",
+      formMessageBody: "",
+      messageSent: false,
+      brokerID: props.location.state.brokerID,
     };
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   componentDidMount() {
     this.setState({ isLoading: true });
+    // gets all data for spesific application based on roll number
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
     const url =
       "http://securedmessaging.azurewebsites.net/api/ApplicationMessages/" +
       this.props.location.state.rollNumber;
     fetch(proxyurl + url)
       .then((res) => res.json())
-      .then((data) => this.setState({ data: data, isLoading: false }));
+      .then((data) => this.setState({ data: data }))
+      .then(
+        fetch(
+          proxyurl +
+            "http://securedmessaging.azurewebsites.net/api/Message_Chain"
+        )
+          .then((res) => res.json())
+          .then((messageChainData) =>
+            this.setState({ messageChainData: messageChainData }, () => {})
+          )
+      )
+      .then(
+        // gets all message_subject to determin the next subject ID when user is sending new message
+        fetch(
+          proxyurl +
+            "http://securedmessaging.azurewebsites.net/api/Message_Subject"
+        )
+          .then((res) => res.json())
+          .then((messageSubjectData) =>
+            this.setState({
+              messageSubjectData: messageSubjectData,
+              isLoading: false,
+            })
+          )
+      );
   }
 
   handleClick = (id) => {
@@ -37,6 +72,106 @@ class ApplicationMessages extends React.Component {
       this.setState({ selectedId: null });
     }
   };
+
+  //handle change subject sets the state of formSelectedSubject and formSelectedSubjectId
+  // these will be needed in the POST to api
+  handleChangeSubject = (event) => {
+    this.setState({ formSelectedSubject: event.target.value }, () => {
+      //callback
+      this.state.data.message_Subjects.map((ms) => {
+        if (ms.subject === this.state.formSelectedSubject) {
+          this.setState({ formSelectedSubjectId: ms.messageSubjectId }, () => {
+            //callback to set state instantly
+          });
+        }
+      });
+    });
+  };
+
+  handleBodyChange = (event) => {
+    this.setState({ formMessageBody: event.target.value });
+  };
+
+  handleNewSubject = (event) => {
+    this.setState({ formNewSubject: event.target.value });
+  };
+
+  // handles user submiting the message from and sends post request to API
+  // show loading screen when message submit. sends message to API and reloads page to display message in message history
+  handleFormSubmit(e) {
+    this.setState({ isLoading: true });
+    e.preventDefault();
+
+    // set next chainID
+    const count = this.state.messageChainData.length - 1;
+    // get last message in chain and its ID, then +1 for next new chain id
+    const chainID = this.state.messageChainData[count].messageChainId + 1;
+    this.setState({ formChainID: chainID }, () => {
+      //callback to set state instantly
+    });
+    // get current time to add to post body 'date and time'
+    let submit_time = Moment().format("ddd DD MMM YYYY HH:mm:ss");
+    // get broker id to add to post body 'sent from id'
+    const brokerID = this.props.location.state.brokerID;
+    // set message subject from state, will change in if statement if new message
+    let messageSubjectId = this.state.formSelectedSubjectId;
+
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+    // IF replying to exisiting message NEW subject DOES NOT need creating first
+    // If NEW suject two fetch methods one for subject then one for chain
+    if (this.state.formLableSelected === "new") {
+      messageSubjectId = this.state.messageSubjectData.length + 1;
+
+      try {
+        fetch(
+          proxyurl +
+            "http://securedmessaging.azurewebsites.net/api/Message_Subject",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            // We convert the React state to JSON and send it as the POST body
+            body: JSON.stringify({
+              messageSubjectId: messageSubjectId,
+              subject: this.state.formNewSubject,
+              rollNumber: this.props.location.state.rollNumber,
+              BrokerID: this.state.brokerID,
+              dateTime: submit_time,
+            }),
+          }
+        )
+          .then((data) =>
+            this.setState({ messageSent: true }, this.componentDidMount())
+          )
+          .then((messageSent) => this.setState({ messageSent: true }));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    try {
+      fetch(proxyurl + 'http://securedmessaging.azurewebsites.net/api/Message_Chain', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // We convert the React state to JSON and send it as the POST body
+        body: JSON.stringify({
+          messageChainId: chainID,
+          messageSubjectId: messageSubjectId,
+          messageBody: this.state.formMessageBody,
+          sentFromId: this.state.brokerID,
+          dateTime: submit_time,
+        }),
+      })
+        .then((data) =>
+          this.setState(
+            { messageSent: true, isLoading: false },
+            this.componentDidMount()
+          )
+        )
+        .then((messageSent) => this.setState({ messageSent: true }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   render() {
     const { data, isLoading } = this.state;
@@ -48,8 +183,6 @@ class ApplicationMessages extends React.Component {
     if (data.length === 0) {
       return <p> no data found</p>;
     }
-
-    console.log("mess: ", data);
 
     return (
       <div>
@@ -66,6 +199,9 @@ class ApplicationMessages extends React.Component {
             </button>
           </div>
         </div>
+        {this.state.messageSent === true && (
+          <div className="messageSent">{this.displaySentText()}</div>
+        )}
         <div className="sendMessageContent">
           <div className="sentMessageText">
             <QuestionIcon className="questionIcon" />
@@ -83,8 +219,7 @@ class ApplicationMessages extends React.Component {
               We’re closed Sundays and Bank Holidays.
             </p>
           </div>
-
-          <Form className="sendMessageForm">
+          <Form className="sendMessageForm" onSubmit={this.handleFormSubmit}>
             <div>
               <ChatIcon className="chatIcon" />
               <h1>Start a new chat or reply to an existing chat</h1>
@@ -121,7 +256,12 @@ class ApplicationMessages extends React.Component {
             {this.returnCorrectFormFields(data)}
             <Form.Group>
               <Form.Label>Message Body</Form.Label>
-              <Form.Control as="textarea" rows={3} />
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={this.state.value}
+                onChange={this.handleBodyChange}
+              />
             </Form.Group>
             <Button variant="primary" type="submit">
               Send Message
@@ -148,33 +288,6 @@ class ApplicationMessages extends React.Component {
               respond too.
             </p>
           </div>
-
-      {/* <Table>
-      <thead className="thead-light">
-        <tr className="thead-light">
-          <th>Chat Subject</th>
-          <th>Nu of mess</th>
-          <th>date time</th>
-          <th>view history</th>
-        </tr>        
-      </thead>
-        <tbody>
-        {data.message_Subjects.map((ms) => (
-          <tr>
-            <td>{ms.subject}</td>
-            <td>{ms.message_Chain.length}</td>
-            <td>{this.getLatestMessageDateTime(ms.message_Chain)}</td>
-            <td><button onClick={() => this.handleClick(ms.messageSubjectId)}>
-                    {this.state.selectedId === ms.messageSubjectId ? (
-                      <UpIcon className="showHideIcons" />
-                    ) : (
-                      <DownIcon className="showHideIcons" />
-                    )}
-                  </button></td>
-          </tr>
-        ))}
-        </tbody>
-      </Table> */}
           <div className="messageSubjectHeader">
             <div className="innerMS">Chat Subject</div>
             <div className="innerMS">Number of messages in chat</div>
@@ -211,6 +324,14 @@ class ApplicationMessages extends React.Component {
     );
   }
 
+  displaySentText() {
+    return (
+      <div>
+        <p>Your message has been sent!</p>
+      </div>
+    );
+  }
+
   returnToApp() {
     this.props.history.goBack();
   }
@@ -227,7 +348,7 @@ class ApplicationMessages extends React.Component {
     return (
       <Form.Group>
         <Form.Label>Select the message subject</Form.Label>
-        <Form.Control as="select" name="isNew">
+        <Form.Control as="select" onChange={this.handleChangeSubject}>
           <option value="0">Choose...</option>
           {data.message_Subjects.map((ms) => (
             <option value={ms.subject}>{ms.subject}</option>
@@ -241,7 +362,12 @@ class ApplicationMessages extends React.Component {
     return (
       <Form.Group>
         <Form.Label>Enter Message Subject</Form.Label>
-        <Form.Control type="text" placeholder="Enter message subject" />
+        <Form.Control
+          type="text"
+          placeholder="Enter message subject"
+          value={this.state.value}
+          onChange={this.handleNewSubject}
+        />
       </Form.Group>
     );
   }
@@ -264,7 +390,7 @@ class ApplicationMessages extends React.Component {
           <div className="messageHistoryBody">
             <div className="innerMS-history-body">{ms.messageBody}</div>
             <div className="innerMS">
-              {Moment(ms.dateTime).format("ddd DD MMM YYYY hh:mm:ss")}
+              {Moment(ms.dateTime).format("ddd DD MMM YYYY HH:mm")}
             </div>
             <div className="innerMS">{ms.sentFromId}</div>
           </div>
@@ -277,8 +403,12 @@ class ApplicationMessages extends React.Component {
     const lastmessage = messageChain.length - 1;
 
     Moment.locale("en");
-    var dt = messageChain[lastmessage].dateTime;
-    return Moment(dt).format("ddd DD MMM YYYY hh:mm:ss");
+    try {
+      var dt = messageChain[lastmessage].dateTime;
+      return Moment(dt).format("ddd DD MMM YYYY HH:mm");
+    } catch (error) {
+      return "Information not avalible";
+    }
   }
 }
 

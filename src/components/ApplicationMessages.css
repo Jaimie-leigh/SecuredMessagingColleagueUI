@@ -18,20 +18,26 @@
 }
 
 .messageSubjectHeader {
-  background-color: #005eb8;
-  color: white;
+  background-color: #EDF6FF;
+  color: #071D49;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  padding: 0.5em;
+  border-top: solid 2px #005EB8;
+  border-bottom: solid 1px #005EB8;
+}
+
+.messageSubject {
+  background-color: white;
   display: flex;
   align-items: center;
   font-weight: bold;
   padding: 0.5em;
 }
 
-.messageSubject {
-  background-color: #edf6ff;
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  padding: 0.5em;
+.messageSubject:last-child{
+  border-bottom: solid 1px #005EB8;
 }
 
 .questionIcon {
@@ -138,8 +144,6 @@ p {
   background-color: white;
   padding: 2em;
   border-radius: 15px;
-  /* border: 1px solid;
-  border-color: #005eb8; */
 }
 
 .showHideIcons {
@@ -149,23 +153,32 @@ p {
 
 .innerMS button {
   min-width: fit-content;
-  background-color: #edf6ff;
+  background-color: white;
 }
 
+button:focus {outline:0;}
+
 .messageHistoryHeader {
-  background-color: #4698e8;
-  color: white;
+  background-color: #EDF6FF;
+  color: #071D49;
   display: flex;
   align-items: center;
   font-weight: bold;
   padding: 0.5em;
+  border-top: solid 2px #005EB8;
+  border-bottom: solid 1px #005EB8;
 }
 
 .messageHistoryBody {
-  background-color: #edf6ff;
+  background-color: white;
   display: flex;
   align-items: center;
   padding: 0.5em;
+  border-bottom: solid 1px #B5BBC8;
+}
+
+.messageHistoryBody:last-child{
+  border-bottom: solid 1px #005EB8;
 }
 
 .innerMS-history-body {
