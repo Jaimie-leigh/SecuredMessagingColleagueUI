@@ -13,6 +13,10 @@
     flex:1
 }
 
+.brokerSignOut a{
+    color: white;
+}
+
 .appName{
     flex:1.2;
 }

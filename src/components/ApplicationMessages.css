@@ -1,7 +1,8 @@
 .detailsBanner{
   background-color: white;
   display: flex;
-  padding: 1em;
+  padding: 0.5em;
+  align-items: center;
 }
 
 .rollNumber{
@@ -13,8 +14,21 @@
   text-align: end;
 }
 
+.returnToApps button{
+  min-width: auto;
+  margin: 0em;
+}
+
+
 .appMessageMainContent {
-  margin: 3em;
+  margin: 2em;
+  margin-left: 5em;
+  margin-right: 5em;
+}
+
+.formHeading{
+  margin: 0em;
+  margin-bottom: 0.5em;
 }
 
 .messageSubjectHeader {
@@ -34,6 +48,7 @@
   align-items: center;
   font-weight: bold;
   padding: 0.5em;
+  border-bottom: solid 1px #B5BBC8;
 }
 
 .messageSubject:last-child{
@@ -66,7 +81,9 @@
 
 .sendMessageContent {
   display: flex;
-  margin: 3em;
+  margin: 2em;
+  margin-left: 5em;
+  margin-right: 5em;
 }
 
 .sentMessageText {
@@ -74,17 +91,18 @@
   color: white;
   border-radius: 15px;
   padding: 1em;
+  padding-top: 2em;
   text-align: center;
   flex: 1;
   margin-right: 2em;
 }
 
 p {
-  font-size: large;
+  font-size: medium;
 }
 
 .sendMessageForm {
-  padding: 20px 40px 40px 40px;
+  padding: 1.5em;
   border-radius: 6px;
   margin: auto;
   flex-direction: column;
@@ -94,7 +112,11 @@ p {
 }
 
 .form-group {
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
+}
+
+.form-group input{
+  margin-bottom: 0.5em;
 }
 
 .sendMessageForm input {

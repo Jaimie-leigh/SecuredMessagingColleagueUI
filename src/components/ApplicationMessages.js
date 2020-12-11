@@ -1,11 +1,13 @@
 import React from "react";
 import "./ApplicationMessages.css";
+import "./loading.css";
+import FadeLoader from "react-spinners/FadeLoader";
 import { ReactComponent as DownIcon } from "../images/down-chevron.svg";
 import { ReactComponent as UpIcon } from "../images/up-chevron.svg";
 import { ReactComponent as ChatIcon } from "../images/chat.svg";
 import { ReactComponent as QuestionIcon } from "../images/question.svg";
 import Moment from "moment";
-import { Form, Button, Col } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 
 class ApplicationMessages extends React.Component {
   constructor(props) {
@@ -111,8 +113,6 @@ class ApplicationMessages extends React.Component {
     });
     // get current time to add to post body 'date and time'
     let submit_time = Moment().format("ddd DD MMM YYYY HH:mm:ss");
-    // get broker id to add to post body 'sent from id'
-    const brokerID = this.props.location.state.brokerID;
     // set message subject from state, will change in if statement if new message
     let messageSubjectId = this.state.formSelectedSubjectId;
 
@@ -145,7 +145,6 @@ class ApplicationMessages extends React.Component {
           )
           .then((messageSent) => this.setState({ messageSent: true }));
       } catch (error) {
-        console.log(error);
       }
     }
     try {
@@ -169,7 +168,6 @@ class ApplicationMessages extends React.Component {
         )
         .then((messageSent) => this.setState({ messageSent: true }));
     } catch (error) {
-      console.log(error);
     }
   }
 
@@ -177,7 +175,12 @@ class ApplicationMessages extends React.Component {
     const { data, isLoading } = this.state;
 
     if (isLoading) {
-      return <p>Loading ...</p>;
+      return (
+        <div className="pageLoading">
+          <p>Loading...</p>
+          <FadeLoader size={150} color={"#005EB8"} loading={isLoading} />
+        </div>
+      );
     }
 
     if (data.length === 0) {
@@ -195,7 +198,7 @@ class ApplicationMessages extends React.Component {
           </div>
           <div className="returnToApps">
             <button onClick={this.props.history.goBack}>
-              return to all applications button
+              Return to All Applications
             </button>
           </div>
         </div>
@@ -208,7 +211,7 @@ class ApplicationMessages extends React.Component {
             <h1>Need to ask us a question about this application?</h1>
             <p>
               Send us a direct message using the form on the right and we will
-              get get back to you as soon as possible.
+              get back to you as soon as possible.
             </p>
             <p>
               All message chats for this application can be found in the{" "}
@@ -222,15 +225,16 @@ class ApplicationMessages extends React.Component {
           <Form className="sendMessageForm" onSubmit={this.handleFormSubmit}>
             <div>
               <ChatIcon className="chatIcon" />
-              <h1>Start a new chat or reply to an existing chat</h1>
+              <h1 className="formHeading">Start a new chat or reply to an existing chat</h1>
             </div>
             <Form.Group>
-              <Form.Label>Roll Number</Form.Label>
+              <Form.Label>Roll Number
               <Form.Control
                 type="text"
                 placeholder={this.props.location.state.rollNumber}
                 disabled
               />
+              </Form.Label>
             </Form.Group>
             <Form.Group className="formRadio">
               <Form.Check
@@ -238,7 +242,7 @@ class ApplicationMessages extends React.Component {
                 type="radio"
                 label="New chat"
                 value="new"
-                name="neworexisitng"
+                name="neworexisting"
                 id="New Message"
                 onChange={this.onFormMessageChanged}
                 defaultChecked
@@ -246,22 +250,23 @@ class ApplicationMessages extends React.Component {
               <Form.Check
                 className="formRadiob"
                 type="radio"
-                label="Reply to exisiting chat"
+                label="Reply to existing  chat"
                 value="reply"
-                name="neworexisitng"
-                id="exisiting Message"
+                name="neworexisting"
+                id="existing Message"
                 onChange={this.onFormMessageChanged}
               />
             </Form.Group>
             {this.returnCorrectFormFields(data)}
             <Form.Group>
-              <Form.Label>Message Body</Form.Label>
+              <Form.Label>Message Body
               <Form.Control
                 as="textarea"
                 rows={3}
                 value={this.state.value}
                 onChange={this.handleBodyChange}
               />
+              </Form.Label>
             </Form.Group>
             <Button variant="primary" type="submit">
               Send Message
@@ -272,18 +277,18 @@ class ApplicationMessages extends React.Component {
           <div className="messageHistoryText">
             <h3>Application Chat History</h3>
             <p>
-              Here you can find all sent and recieved message chats for this
+              Here you can find all sent and received message chats for this
               Application.
             </p>
-            <p>
+            {/* <p>
               To expand a set of messages to see more detail including, the
               message content, message date and time and who sent the message,
               press the down icon that looks like this:{" "}
               <DownIcon className="innerMSDownIcon" />.
-            </p>
+            </p> */}
             <p>
               If you have another question about any of the same topics found
-              below, please use the above form and check the 'reply to exisiting
+              below, please use the above form and check the 'reply to existing
               chat' button to select the message subject you would like to
               respond too.
             </p>
@@ -294,15 +299,15 @@ class ApplicationMessages extends React.Component {
             <div className="innerMS">Latest message Date and Time</div>
             <div className="innerMS">View chat history</div>
           </div>
-          {data.message_Subjects.map((ms) => (
-            <>
+          {data.message_Subjects.map((ms, index) => (
+            <div key={index+ms.toString()}>
               <div className="messageSubject">
-                <div className="innerMS">{ms.subject}</div>
-                <div className="innerMS">{ms.message_Chain.length}</div>
-                <div className="innerMS">
+                <div className="innerMS" >{ms.subject}</div>
+                <div className="innerMS" >{ms.message_Chain.length}</div>
+                <div className="innerMS" >
                   {this.getLatestMessageDateTime(ms.message_Chain)}
                 </div>
-                <div className="innerMS">
+                <div className="innerMS" >
                   <button onClick={() => this.handleClick(ms.messageSubjectId)}>
                     {this.state.selectedId === ms.messageSubjectId ? (
                       <UpIcon className="showHideIcons" />
@@ -313,11 +318,11 @@ class ApplicationMessages extends React.Component {
                 </div>
               </div>
               {this.state.selectedId === ms.messageSubjectId && (
-                <div className="messageHistory">
+                <div className="messageHistory" >
                   {this.getAllMessageInChain(ms.message_Chain)}
                 </div>
               )}
-            </>
+            </div>
           ))}
         </div>
       </div>
@@ -347,13 +352,14 @@ class ApplicationMessages extends React.Component {
   choseMessageSubject(data) {
     return (
       <Form.Group>
-        <Form.Label>Select the message subject</Form.Label>
+        <Form.Label>Select the message subject
         <Form.Control as="select" onChange={this.handleChangeSubject}>
           <option value="0">Choose...</option>
-          {data.message_Subjects.map((ms) => (
-            <option value={ms.subject}>{ms.subject}</option>
+          {data.message_Subjects.map((ms, index) => (
+            <option value={ms.subject} key={ms.toString()+index} >{ms.subject}</option>
           ))}
         </Form.Control>
+        </Form.Label>
       </Form.Group>
     );
   }
@@ -386,13 +392,13 @@ class ApplicationMessages extends React.Component {
           <div className="innerMS">Date and Time</div>
           <div className="innerMS">Message sent by</div>
         </div>
-        {messageChain.map((ms) => (
-          <div className="messageHistoryBody">
-            <div className="innerMS-history-body">{ms.messageBody}</div>
-            <div className="innerMS">
+        {messageChain.map((ms, index) => (
+          <div className="messageHistoryBody" key={ms.toString()+index} >
+            <div className="innerMS-history-body" >{ms.messageBody}</div>
+            <div className="innerMS" >
               {Moment(ms.dateTime).format("ddd DD MMM YYYY HH:mm")}
             </div>
-            <div className="innerMS">{ms.sentFromId}</div>
+            <div className="innerMS" >{ms.sentFromId}</div>
           </div>
         ))}
       </div>
