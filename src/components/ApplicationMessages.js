@@ -85,6 +85,9 @@ class ApplicationMessages extends React.Component {
           this.setState({ formSelectedSubjectId: ms.messageSubjectId }, () => {
             //callback to set state instantly
           });
+          return null
+        } else {
+          return null
         }
       });
     });
@@ -144,22 +147,25 @@ class ApplicationMessages extends React.Component {
             this.setState({ messageSent: true }, this.componentDidMount())
           )
           .then((messageSent) => this.setState({ messageSent: true }));
-      } catch (error) {
-      }
+      } catch (error) {}
     }
     try {
-      fetch(proxyurl + 'http://securedmessaging.azurewebsites.net/api/Message_Chain', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        // We convert the React state to JSON and send it as the POST body
-        body: JSON.stringify({
-          messageChainId: chainID,
-          messageSubjectId: messageSubjectId,
-          messageBody: this.state.formMessageBody,
-          sentFromId: this.state.brokerID,
-          dateTime: submit_time,
-        }),
-      })
+      fetch(
+        proxyurl +
+          "http://securedmessaging.azurewebsites.net/api/Message_Chain",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          // We convert the React state to JSON and send it as the POST body
+          body: JSON.stringify({
+            messageChainId: chainID,
+            messageSubjectId: messageSubjectId,
+            messageBody: this.state.formMessageBody,
+            sentFromId: this.state.brokerID,
+            dateTime: submit_time,
+          }),
+        }
+      )
         .then((data) =>
           this.setState(
             { messageSent: true, isLoading: false },
@@ -167,8 +173,7 @@ class ApplicationMessages extends React.Component {
           )
         )
         .then((messageSent) => this.setState({ messageSent: true }));
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   render() {
@@ -225,15 +230,18 @@ class ApplicationMessages extends React.Component {
           <Form className="sendMessageForm" onSubmit={this.handleFormSubmit}>
             <div>
               <ChatIcon className="chatIcon" />
-              <h1 className="formHeading">Start a new chat or reply to an existing chat</h1>
+              <h1 className="formHeading">
+                Start a new chat or reply to an existing chat
+              </h1>
             </div>
             <Form.Group>
-              <Form.Label>Roll Number
-              <Form.Control
-                type="text"
-                placeholder={this.props.location.state.rollNumber}
-                disabled
-              />
+              <Form.Label>
+                Roll Number
+                <Form.Control
+                  type="text"
+                  placeholder={this.props.location.state.rollNumber}
+                  disabled
+                />
               </Form.Label>
             </Form.Group>
             <Form.Group className="formRadio">
@@ -259,13 +267,14 @@ class ApplicationMessages extends React.Component {
             </Form.Group>
             {this.returnCorrectFormFields(data)}
             <Form.Group>
-              <Form.Label>Message Body
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={this.state.value}
-                onChange={this.handleBodyChange}
-              />
+              <Form.Label>
+                Message Body
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  value={this.state.value}
+                  onChange={this.handleBodyChange}
+                />
               </Form.Label>
             </Form.Group>
             <Button variant="primary" type="submit">
@@ -300,14 +309,14 @@ class ApplicationMessages extends React.Component {
             <div className="innerMS">View chat history</div>
           </div>
           {data.message_Subjects.map((ms, index) => (
-            <div key={index+ms.toString()}>
+            <div key={index + ms.toString()}>
               <div className="messageSubject">
-                <div className="innerMS" >{ms.subject}</div>
-                <div className="innerMS" >{ms.message_Chain.length}</div>
-                <div className="innerMS" >
+                <div className="innerMS">{ms.subject}</div>
+                <div className="innerMS">{ms.message_Chain.length}</div>
+                <div className="innerMS">
                   {this.getLatestMessageDateTime(ms.message_Chain)}
                 </div>
-                <div className="innerMS" >
+                <div className="innerMS">
                   <button onClick={() => this.handleClick(ms.messageSubjectId)}>
                     {this.state.selectedId === ms.messageSubjectId ? (
                       <UpIcon className="showHideIcons" />
@@ -318,7 +327,7 @@ class ApplicationMessages extends React.Component {
                 </div>
               </div>
               {this.state.selectedId === ms.messageSubjectId && (
-                <div className="messageHistory" >
+                <div className="messageHistory">
                   {this.getAllMessageInChain(ms.message_Chain)}
                 </div>
               )}
@@ -352,13 +361,16 @@ class ApplicationMessages extends React.Component {
   choseMessageSubject(data) {
     return (
       <Form.Group>
-        <Form.Label>Select the message subject
-        <Form.Control as="select" onChange={this.handleChangeSubject}>
-          <option value="0">Choose...</option>
-          {data.message_Subjects.map((ms, index) => (
-            <option value={ms.subject} key={ms.toString()+index} >{ms.subject}</option>
-          ))}
-        </Form.Control>
+        <Form.Label>
+          Select the message subject
+          <Form.Control as="select" onChange={this.handleChangeSubject}>
+            <option value="0">Choose...</option>
+            {data.message_Subjects.map((ms, index) => (
+              <option value={ms.subject} key={ms.toString() + index}>
+                {ms.subject}
+              </option>
+            ))}
+          </Form.Control>
         </Form.Label>
       </Form.Group>
     );
@@ -393,12 +405,12 @@ class ApplicationMessages extends React.Component {
           <div className="innerMS">Message sent by</div>
         </div>
         {messageChain.map((ms, index) => (
-          <div className="messageHistoryBody" key={ms.toString()+index} >
-            <div className="innerMS-history-body" >{ms.messageBody}</div>
-            <div className="innerMS" >
+          <div className="messageHistoryBody" key={ms.toString() + index}>
+            <div className="innerMS-history-body">{ms.messageBody}</div>
+            <div className="innerMS">
               {Moment(ms.dateTime).format("ddd DD MMM YYYY HH:mm")}
             </div>
-            <div className="innerMS" >{ms.sentFromId}</div>
+            <div className="innerMS">{ms.sentFromId}</div>
           </div>
         ))}
       </div>
