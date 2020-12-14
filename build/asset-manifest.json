@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3fffb231.chunk.css",
+    "main.js": "/static/js/main.73270c40.chunk.js",
+    "main.js.map": "/static/js/main.73270c40.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.92a1bfc4.js",
+    "runtime-main.js.map": "/static/js/runtime-main.92a1bfc4.js.map",
+    "static/js/2.0cd98719.chunk.js": "/static/js/2.0cd98719.chunk.js",
+    "static/js/2.0cd98719.chunk.js.map": "/static/js/2.0cd98719.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.d19238eec80abf06ca68a9ca1f5775b4.js": "/precache-manifest.d19238eec80abf06ca68a9ca1f5775b4.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.3fffb231.chunk.css.map": "/static/css/main.3fffb231.chunk.css.map",
+    "static/js/2.0cd98719.chunk.js.LICENSE.txt": "/static/js/2.0cd98719.chunk.js.LICENSE.txt",
+    "static/media/chat.a172507a.svg": "/static/media/chat.a172507a.svg",
+    "static/media/down-chevron.4a224524.svg": "/static/media/down-chevron.4a224524.svg",
+    "static/media/halifax_logo.b808289c.svg": "/static/media/halifax_logo.b808289c.svg",
+    "static/media/home-black.f29dfa38.svg": "/static/media/home-black.f29dfa38.svg",
+    "static/media/question.c6f1a90f.svg": "/static/media/question.c6f1a90f.svg",
+    "static/media/up-chevron.16226f88.svg": "/static/media/up-chevron.16226f88.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.92a1bfc4.js",
+    "static/js/2.0cd98719.chunk.js",
+    "static/css/main.3fffb231.chunk.css",
+    "static/js/main.73270c40.chunk.js"
+  ]
+}
