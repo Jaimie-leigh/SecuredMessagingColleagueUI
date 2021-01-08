@@ -29,7 +29,7 @@ class BrokerWelcome extends React.Component {
   }
 
   routeChange(){
-    window.location.href="/LogIn"
+    window.location.href="/"
   }
 
   render() {
