@@ -26,7 +26,7 @@ class ApplicationMessages extends React.Component {
       formChainID: "",
       formMessageBody: "",
       messageSent: false,
-      brokerID: props.location.state.brokerID,
+      brokerID: props.location.state,
     };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
@@ -85,9 +85,9 @@ class ApplicationMessages extends React.Component {
           this.setState({ formSelectedSubjectId: ms.messageSubjectId }, () => {
             //callback to set state instantly
           });
-          return null
+          return null;
         } else {
-          return null
+          return null;
         }
       });
     });
@@ -143,12 +143,30 @@ class ApplicationMessages extends React.Component {
             }),
           }
         )
-          .then((data) =>
-            this.setState({ messageSent: true }, this.componentDidMount())
+          .then(fetch(
+            proxyurl +
+              "http://securedmessaging.azurewebsites.net/api/Message_Chain",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              // We convert the React state to JSON and send it as the POST body
+              body: JSON.stringify({
+                messageChainId: chainID,
+                messageSubjectId: messageSubjectId,
+                messageBody: this.state.formMessageBody,
+                sentFromId: this.state.brokerID,
+                dateTime: submit_time,
+              }),
+            }
           )
-          .then((messageSent) => this.setState({ messageSent: true }));
+            .then((data) =>
+              this.setState(
+                { messageSent: true, isLoading: false, formLableSelected: "new"},
+                this.componentDidMount()
+              )
+          ));
       } catch (error) {}
-    }
+    } else {
     try {
       fetch(
         proxyurl +
@@ -168,12 +186,11 @@ class ApplicationMessages extends React.Component {
       )
         .then((data) =>
           this.setState(
-            { messageSent: true, isLoading: false },
+            { messageSent: true, isLoading: false, formLableSelected: "new"},
             this.componentDidMount()
           )
-        )
-        .then((messageSent) => this.setState({ messageSent: true }));
-    } catch (error) {}
+        );
+    } catch (error) {}};
   }
 
   render() {
@@ -192,6 +209,7 @@ class ApplicationMessages extends React.Component {
       return <p> no data found</p>;
     }
 
+    console.log(data)
     return (
       <div>
         <div className="detailsBanner">
@@ -214,13 +232,16 @@ class ApplicationMessages extends React.Component {
           <div className="sentMessageText">
             <QuestionIcon className="questionIcon" />
             <h1>Need to ask us a question about this application?</h1>
+            <h2>We're here to help</h2>
             <p>
-              Send us a direct message using the form on the right and we will
-              get back to you as soon as possible.
+              You can speak to us from the comfort of your own home, at your own
+              convienance. Start a new chat or continue an exisiting chat using
+              the form on the right and we will get back to you as soon as
+              possible.
             </p>
             <p>
-              All message chats for this application can be found in the{" "}
-              <strong>"Application Chat History"</strong> section on this page.
+              All message chats for this application can be found in the
+              <strong>"Application Chat History"</strong> section below.
             </p>
             <p>
               We are open Monday to Friday 8am to 6pm and Saturday 9am to 4pm.
@@ -274,6 +295,9 @@ class ApplicationMessages extends React.Component {
                   rows={3}
                   value={this.state.value}
                   onChange={this.handleBodyChange}
+                  required
+                  maxLength="250"
+                  minLength="10"
                 />
               </Form.Label>
             </Form.Group>
@@ -284,9 +308,9 @@ class ApplicationMessages extends React.Component {
         </div>
         <div className="appMessageMainContent">
           <div className="messageHistoryText">
-            <h3>Application Chat History</h3>
+            <h1>Application Chat History</h1>
             <p>
-              Here you can find all sent and received message chats for this
+              Here you can find all sent and received chats for this
               Application.
             </p>
             {/* <p>
@@ -296,10 +320,10 @@ class ApplicationMessages extends React.Component {
               <DownIcon className="innerMSDownIcon" />.
             </p> */}
             <p>
-              If you have another question about any of the same topics found
-              below, please use the above form and check the 'reply to existing
-              chat' button to select the message subject you would like to
-              respond too.
+              To continue any existing chat's use the form above and select
+              'Reply to existing chat' and we will get back to you as soon as we
+              can. Alternative you can start a New chat if you need to ask us
+              something new.
             </p>
           </div>
           <div className="messageSubjectHeader">
@@ -308,7 +332,7 @@ class ApplicationMessages extends React.Component {
             <div className="innerMS">Latest message Date and Time</div>
             <div className="innerMS">View chat history</div>
           </div>
-          {data.message_Subjects.map((ms, index) => (
+          {data?.message_Subjects?.map((ms, index) => (
             <div key={index + ms.toString()}>
               <div className="messageSubject">
                 <div className="innerMS">{ms.subject}</div>
@@ -351,10 +375,10 @@ class ApplicationMessages extends React.Component {
   }
 
   returnCorrectFormFields(data) {
-    if (this.state.formLableSelected === "new") {
-      return this.newMessageSubject(data);
-    } else {
+    if (this.state.formLableSelected !== "new") {
       return this.choseMessageSubject(data);
+    } else {
+      return this.newMessageSubject(data);
     }
   }
 
@@ -385,6 +409,9 @@ class ApplicationMessages extends React.Component {
           placeholder="Enter message subject"
           value={this.state.value}
           onChange={this.handleNewSubject}
+          required
+          maxLength="100"
+          minLength="4"
         />
       </Form.Group>
     );

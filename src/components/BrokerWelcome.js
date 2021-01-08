@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import "./BrokerWelcome.css";
 import "./loading.css";
 import { ReactComponent as HomeIcon } from "../images/home-black.svg";
@@ -28,6 +29,10 @@ class BrokerWelcome extends React.Component {
       .then((data) => this.setState({ data: data, isLoading: false }));
   }
 
+  routeChange(){
+    window.location.href="/LogIn"
+  }
+
   render() {
     const { data, isLoading } = this.state;
     if (isLoading) {
@@ -39,7 +44,7 @@ class BrokerWelcome extends React.Component {
       );
     }
     if (data.length === 0) {
-      return <p> no data found</p>;
+      return <p>no data found</p>;
     }
     return (
       <div className="brokerWelcome">
@@ -52,8 +57,8 @@ class BrokerWelcome extends React.Component {
           <p className="appName">
             <strong>Secured Messaging</strong>
           </p>
-          <button className="brokerSignOut">
-            <Link to={{ pathname: "/LogIn" }}>Sign Out</Link>
+          <button className="brokerSignOut" onClick={() => this.routeChange()}>
+            Sign Out
           </button>
         </div>
         <div className="brokerInfoBox">
@@ -66,8 +71,8 @@ class BrokerWelcome extends React.Component {
           </p>
         </div>
         <div className="brokerApps">
-          {data.application.map((app, index) => (
-            <ul className="applicationBox" key={app.toString()+index}>
+          {data?.application?.map((app, index) => (
+            <ul className="applicationBox" key={app.toString() + index}>
               <li className="appLink">
                 <HomeIcon className="applicationBoxHeaderIcon" />
                 <Link

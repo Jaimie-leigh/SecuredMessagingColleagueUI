@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header tests test renders as per snapshot 1`] = `
+<header
+  className="header"
+>
+  <svg
+    className="header-logo"
+  >
+    halifax_logo.svg
+  </svg>
+</header>
+`;

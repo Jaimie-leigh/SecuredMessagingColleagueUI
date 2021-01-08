@@ -1,45 +1,49 @@
-.detailsBanner{
-  background-color: white;
+.detailsBanner {
+  background-color: whitesmoke;
   display: flex;
   padding: 0.5em;
   align-items: center;
 }
 
-.rollNumber{
+.rollNumber {
   flex: 1;
 }
 
-.returnToApps{
+.returnToApps {
   flex: 1;
   text-align: end;
 }
 
-.returnToApps button{
+.returnToApps button {
   min-width: auto;
   margin: 0em;
 }
 
-
 .appMessageMainContent {
-  margin: 2em;
-  margin-left: 5em;
-  margin-right: 5em;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 5%;
+  padding: 0.5em;
 }
 
-.formHeading{
+.appMessageMainContent h1 {
+  color: #071d49;
+}
+
+.formHeading {
   margin: 0em;
   margin-bottom: 0.5em;
 }
 
 .messageSubjectHeader {
-  background-color: #EDF6FF;
-  color: #071D49;
+  background-color: #edf6ff;
+  color: #071d49;
   display: flex;
   align-items: center;
   font-weight: bold;
   padding: 0.5em;
-  border-top: solid 2px #005EB8;
-  border-bottom: solid 1px #005EB8;
+  border-top: solid 2px #005eb8;
+  border-bottom: solid 1px #005eb8;
 }
 
 .messageSubject {
@@ -48,11 +52,11 @@
   align-items: center;
   font-weight: bold;
   padding: 0.5em;
-  border-bottom: solid 1px #B5BBC8;
+  border-bottom: solid 1px #b5bbc8;
 }
 
-.messageSubject:last-child{
-  border-bottom: solid 1px #005EB8;
+.messageSubject:last-child {
+  border-bottom: solid 1px #005eb8;
 }
 
 .questionIcon {
@@ -82,8 +86,8 @@
 .sendMessageContent {
   display: flex;
   margin: 2em;
-  margin-left: 5em;
-  margin-right: 5em;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 .sentMessageText {
@@ -93,8 +97,8 @@
   padding: 1em;
   padding-top: 2em;
   text-align: center;
-  flex: 1;
   margin-right: 2em;
+  width: 100%;
 }
 
 p {
@@ -108,14 +112,14 @@ p {
   flex-direction: column;
   box-shadow: 0px 8px 36px #222;
   max-width: unset;
-  flex: 2;
+  width: 100%;
 }
 
 .form-group {
   margin-bottom: 0.5em;
 }
 
-.form-group input{
+.form-group input {
   margin-bottom: 0.5em;
 }
 
@@ -162,12 +166,6 @@ p {
   margin-bottom: 2em;
 }
 
-.appMessageMainContent {
-  background-color: white;
-  padding: 2em;
-  border-radius: 15px;
-}
-
 .showHideIcons {
   width: 2em;
   height: 2em;
@@ -178,17 +176,19 @@ p {
   background-color: white;
 }
 
-button:focus {outline:0;}
+button:focus {
+  outline: 0;
+}
 
 .messageHistoryHeader {
-  background-color: #EDF6FF;
-  color: #071D49;
+  background-color: #edf6ff;
+  color: #071d49;
   display: flex;
   align-items: center;
   font-weight: bold;
   padding: 0.5em;
-  border-top: solid 2px #005EB8;
-  border-bottom: solid 1px #005EB8;
+  border-top: solid 2px #005eb8;
+  border-bottom: solid 1px #005eb8;
 }
 
 .messageHistoryBody {
@@ -196,11 +196,11 @@ button:focus {outline:0;}
   display: flex;
   align-items: center;
   padding: 0.5em;
-  border-bottom: solid 1px #B5BBC8;
+  border-bottom: solid 1px #b5bbc8;
 }
 
-.messageHistoryBody:last-child{
-  border-bottom: solid 1px #005EB8;
+.messageHistoryBody:last-child {
+  border-bottom: solid 1px #005eb8;
 }
 
 .innerMS-history-body {

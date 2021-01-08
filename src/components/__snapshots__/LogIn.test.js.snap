@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Log in snapshot test test renders as per snapshot 1`] = `
+<div
+  className="Login"
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <h1>
+      Secured Messenging
+    </h1>
+    <label>
+      Username:
+      <input
+        maxLength="7"
+        minLength="7"
+        name="BrokerId"
+        onChange={[Function]}
+        required={true}
+        type="tel"
+        value=""
+      />
+    </label>
+    <button>
+      Log In
+    </button>
+  </form>
+</div>
+`;
