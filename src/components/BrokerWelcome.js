@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { BrowserRouter as Router } from "react-router-dom";
 import "./BrokerWelcome.css";
 import "./loading.css";
 import { ReactComponent as HomeIcon } from "../images/home-black.svg";
