@@ -99,3 +99,8 @@
     margin-top: 0.5em;
     text-align: center;
 }
+
+.showHideIcons {
+  width: 2em;
+  height: 2em;
+}
