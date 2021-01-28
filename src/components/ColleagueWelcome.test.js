@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import renderer from "react-test-renderer";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import BrokerWelcome from "./BrokerWelcome";
+import ColleagueWelcome from "./ColleagueWelcome";
 
 let container = null;
 
@@ -19,24 +19,27 @@ afterEach(() => {
   container = null;
 });
 
-describe("Broker Welcome tests", () => {
+describe("Colleague Welcome tests", () => {
   test("test renders as per snapshot", () => {
-    const brokerId = "1000002";
+    const colleagueId = "912345";
     const tree = renderer
-      .create(<BrokerWelcome location={brokerId}></BrokerWelcome>)
+      .create(<ColleagueWelcome location={colleagueId}></ColleagueWelcome>)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
 
   test("test page renders as epxected when loading", () => {
-    const brokerId = "1000002";
-    render(<BrokerWelcome location={brokerId}></BrokerWelcome>, container);
+    const colleagueId = "912345";
+    render(
+      <ColleagueWelcome location={colleagueId}></ColleagueWelcome>,
+      container
+    );
     expect(container.innerHTML).toContain("Loading...");
   });
 
-  test("mock fetch call, empty responce from db should return no data", async () => {
+  test("mock fetch call, user not valid", async () => {
     const fakeResponse = [];
-    const brokerId = "1000002";
+    const colleagueId = "91234555";
 
     jest.spyOn(window, "fetch").mockImplementation(() => {
       const fetchResponse = {
@@ -46,37 +49,23 @@ describe("Broker Welcome tests", () => {
     });
 
     await act(async () => {
-      render(<BrokerWelcome location={brokerId} />, container);
+      render(<ColleagueWelcome location={colleagueId} />, container);
     });
 
-    expect(container.innerHTML).toContain("no data");
+    expect(container.innerHTML).toContain("User not found");
 
     window.fetch.mockRestore();
   });
 
   test("mock fetch call, valid responce from db should return applications", async () => {
-    const fakeResponse = [
+    const fakeResponse = 
       {
-        brokerId: 1000002,
-        brokerForename: "Ranveer",
-        brokerSurname: "Burn",
-        application: [
-          {
-            rollNumber: 1000000002,
-            customerFullName: "Rachel Brown",
-            brokerId: 1000002,
-            message_Subject: null,
-          },
-          {
-            rollNumber: 1000000003,
-            customerFullName: "Blake Kent",
-            brokerId: 1000002,
-            message_Subject: null,
-          },
-        ],
-      },
-    ];
-    const brokerId = "1000002";
+        colleagueId: 912345,
+        colleagueForename: "Rebecca",
+        colleagueSurname: "Jones",
+      }
+    ;
+    const colleagueId = "912345";
 
     jest.spyOn(window, "fetch").mockImplementation(() => {
       const fetchResponse = {
@@ -86,10 +75,12 @@ describe("Broker Welcome tests", () => {
     });
 
     await act(async () => {
-      render(<BrokerWelcome location={brokerId} />, container);
+      render(<ColleagueWelcome location={colleagueId} />, container);
     });
 
-    expect(container.innerHTML).toContain("Click on the roll number to send and view messages relating to the application");
+    expect(container.innerHTML).toContain(
+      "Welcome Rebecca Jones"
+    );
 
     window.fetch.mockRestore();
   });

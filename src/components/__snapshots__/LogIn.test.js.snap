@@ -13,9 +13,9 @@ exports[`Log in snapshot test test renders as per snapshot 1`] = `
     <label>
       Username:
       <input
-        maxLength="7"
-        minLength="7"
-        name="BrokerId"
+        maxLength="6"
+        minLength="6"
+        name="ColleagueId"
         onChange={[Function]}
         required={true}
         type="tel"

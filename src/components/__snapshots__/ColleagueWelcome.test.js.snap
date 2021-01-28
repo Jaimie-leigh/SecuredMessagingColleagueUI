@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Colleague Welcome tests test renders as per snapshot 1`] = `
+<div
+  className="pageLoading"
+>
+  <p>
+    Loading...
+  </p>
+  <div
+    className="css-1ujetdd"
+  >
+    <div
+      className="css-1938t4y"
+    />
+    <div
+      className="css-iguij7"
+    />
+    <div
+      className="css-1y6778f"
+    />
+    <div
+      className="css-dtp5nv"
+    />
+    <div
+      className="css-1irslik"
+    />
+    <div
+      className="css-1ro0oci"
+    />
+    <div
+      className="css-1f7jqjv"
+    />
+    <div
+      className="css-q5ow2x"
+    />
+  </div>
+</div>
+`;

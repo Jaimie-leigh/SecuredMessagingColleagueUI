@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import renderer from 'react-test-renderer';
 import {render, unmountComponentAtNode } from 'react-dom';
 import LogIn from './LogIn';
-import fireEvent from '@testing-library/react'
+import {fireEvent, screen, queryByLabelText } from '@testing-library/react'
+//import { screen, getByLabelText } from '@testing-library/dom'
 
 let container = null;
 
@@ -27,16 +28,18 @@ describe('Log in snapshot test', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("test page renders as epxected when loading", () => {
-        const searchInput = queryByLabelText('BrokerId');
+    // test("test page renders as epxected when invalid text entered too userID field", () => {
+    //     const searchInput = screen.queryByLabelText('ColleagueId');
     
-        render(
-          <ApplicationMessages location={{ state: state }}></ApplicationMessages>,
-          container
-        );
+    //     render(
+    //       <LogIn></LogIn>,
+    //       container
+    //     );
 
-        fireEvent.change(searchInput, { target: { value: 'abcde' }})
+    //     userEvent.type(screen.queryByLabelText('ColleagueId'), 'abcde')
+    //     //expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!')
 
-        expect(container.innerHTML).toContain("numbers only allowed");
-      });
+    //     // fireEvent.change(searchInput, { target: { value: 'abcde' }})
+    //      expect(container.innerHTML).toContain("numbers only allowed");
+    //   });
 });

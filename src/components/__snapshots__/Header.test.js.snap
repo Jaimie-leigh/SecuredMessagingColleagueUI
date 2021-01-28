@@ -7,7 +7,7 @@ exports[`Header tests test renders as per snapshot 1`] = `
   <svg
     className="header-logo"
   >
-    halifax_logo.svg
+    LBGLogo.svg
   </svg>
 </header>
 `;

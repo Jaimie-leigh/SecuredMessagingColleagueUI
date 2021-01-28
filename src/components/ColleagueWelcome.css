@@ -1,0 +1,101 @@
+.colleagueWelcome {
+  align-content: center;
+}
+
+.colleagueDetails {
+  display: flex;
+  background-color: #2d8259;
+  flex: 1;
+  color: white;
+}
+
+.colleagueID {
+  flex: 1;
+  padding-left: 0.5em;
+}
+
+.signOut a {
+  color: white;
+}
+
+.colleagueDetails button:hover {
+  background-color: white;
+  color: black;
+}
+
+.helpText {
+  font-weight: inherit;
+}
+
+.appName {
+  flex: 1.2;
+}
+
+.colleagueDetails button {
+  min-width: fit-content;
+  min-height: 100%;
+  margin: 0;
+  background-color: #2178b0;
+  font-weight: bold;
+}
+
+.infoBox {
+  width: max-content;
+  padding: 1em;
+  text-align: center;
+  width: -webkit-fill-available;
+}
+
+.brokerMessages {
+  padding: 2em;
+}
+
+.brokerMessageHeaders {
+  background-color: #edf6ff;
+  color: #071d49;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  padding: 0.5em;
+  border-top: solid 2px #005eb8;
+  border-bottom: solid 1px #005eb8;
+}
+
+.innerMessage {
+  flex: 1;
+}
+
+.innerMessage-2 {
+  flex: 2;
+}
+
+.innerMessage:last-child {
+  text-align: right;
+}
+
+.innerMessage button {
+  min-width: auto;
+  background-color: #77ba00;
+}
+
+.brokerMessageDetails {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  padding: 0.5em;
+  border-bottom: solid 1px #b5bbc8;
+}
+
+.sendMessageForm {
+  background-color: white;
+  padding: 1em;
+}
+
+.messageSent {
+  background-color: #2178b0;
+    color: white;
+    padding: 0.1em;
+    margin-top: 0.5em;
+    text-align: center;
+}
