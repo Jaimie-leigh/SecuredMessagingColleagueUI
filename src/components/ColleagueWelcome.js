@@ -183,7 +183,9 @@ class ColleagueWelcome extends React.Component {
     var latestMessageIndex;
     var latestMessage;
 
-    messageData?.message_Subjects?.forEach(saveNewBrokerMessage);
+    if(messageData.message_Subjects){
+    messageData.message_Subjects.forEach(saveNewBrokerMessage)
+    }
 
     // saves the new messages into an array with the rquired details 
     function saveNewBrokerMessage(sub) {
