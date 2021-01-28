@@ -62,16 +62,32 @@ class ColleagueWelcome extends React.Component {
 
   // sets the subject and chain id for the messgae the colleague is replying too 
   handleClick(message) {
+
+    if(this.state.selectedSubjectId !== message.message_Subject.subjectId)
+    {
     this.setState(
       { selectedSubjectId: message.message_Subject.subjectId } , () => {
         });
+      } else {
+        this.setState(
+          { selectedSubjectId: null } , () => {
+            });
+      }
 
+      if(this.state.selectedChainId !== message.message_Subject.message_Chain.messageChainId) {
     this.setState(
           { selectedChainId: message.message_Subject.message_Chain.messageChainId },
           () => {
             //callback to set state instantly
           }
         );
+      } else {
+        this.setState(
+          { selectedChainId: null },
+          () => {
+            //callback to set state instantly
+          })
+      };
   }
 
   // handles user submiting the message from and sends post request to API

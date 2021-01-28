@@ -76,6 +76,7 @@
 .innerMessage button {
   min-width: auto;
   background-color: #77ba00;
+  border-radius: 0%;
 }
 
 .brokerMessageDetails {
@@ -103,4 +104,31 @@
 .showHideIcons {
   width: 2em;
   height: 2em;
+}
+
+.sendMessageForm {
+  flex-direction: column;
+  max-width: unset;
+}
+
+.form-group {
+  margin-bottom: 0.5em;
+}
+
+.form-group textarea {
+  display: block;
+  width: -webkit-fill-available;
+}
+
+.sendMessageForm input {
+  flex: auto;
+  max-width: max-content;
+  min-width: -webkit-fill-available;
+}
+
+.sendMessageForm select {
+  flex: auto;
+  width: auto;
+  min-width: -webkit-fill-available;
+  height: max-content;
 }
