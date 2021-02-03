@@ -51,7 +51,7 @@ export default function LogIn() {
         </label>
         {isValid === false && (
           <div className="helpText">
-            <p>Username should consist of 6 characters including only digitis, please re-enter your username</p>
+            <p>Username should consist of 6 characters including only digits, please re-enter your username</p>
           </div>
         )}
         <button>Log In</button>
