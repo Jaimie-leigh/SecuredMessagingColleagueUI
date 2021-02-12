@@ -172,9 +172,7 @@ class ColleagueWelcome extends React.Component {
             <strong>Message Backlog</strong>
           </p>
           <p className="helpText">
-            The below application have open chats awaiting a response. Click on
-            the roll number to send and view messages relation to the
-            application.
+            Here you can find any applications that have open chats awaiting a response. 
           </p>
         </div>
         <div className="brokerMessages">
@@ -278,7 +276,7 @@ class ColleagueWelcome extends React.Component {
                     />
                   </Form.Label>
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button className="senMessageButton" variant="primary" type="submit">
                   Send Message
                 </Button>
               </Form>
